@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>走位轨迹碰撞排练台</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <h1>走位轨迹碰撞排练台</h1>
+    </div>
+    <div class="toolbar">
+      <button id="btn-play" class="btn primary" type="button">▶ 播放</button>
+      <button id="btn-reset-t" class="btn" type="button">⏮ 回到起点</button>
+      <label class="speed-label">倍速
+        <select id="sel-speed">
+          <option value="0.25">0.25×</option>
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+        </select>
+      </label>
+      <div class="clock"><span id="clock-time">0.00</span> s</div>
+      <span class="toolbar-sep"></span>
+      <button id="btn-sample" class="btn" type="button">↺ 恢复样例</button>
+      <button id="btn-verify" class="btn" type="button">☁ 服务端复算</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage-col">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>舞台（20m × 12m）</h2>
+          <div class="legend">
+            <span class="legend-item"><i class="sw danger"></i>碰撞中的表演者</span>
+            <span class="legend-item"><i class="sw path"></i>走位轨迹</span>
+            <span class="legend-item"><i class="sw handle"></i>可拖走位点</span>
+          </div>
+        </div>
+        <canvas id="stage-canvas"></canvas>
+        <div id="danger-banner" class="danger-banner hidden"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>时间轴</h2>
+          <div class="hint">拖动圆点改时刻 · 双击轨道在该时刻补点 · 双击圆点删点（至少保留 1 个）</div>
+        </div>
+        <canvas id="timeline-canvas"></canvas>
+      </div>
+    </section>
+
+    <aside class="side-col">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>表演者</h2>
+          <button id="btn-add" class="btn small" type="button">＋ 添加</button>
+        </div>
+        <div id="performer-list" class="performer-list"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>碰撞报告</h2></div>
+        <div class="summary-cards">
+          <div class="card">
+            <div class="card-label">首次碰撞</div>
+            <div id="sum-first" class="card-value">—</div>
+            <div id="sum-first-pair" class="card-sub">&nbsp;</div>
+          </div>
+          <div class="card">
+            <div class="card-label">全程最小间距</div>
+            <div id="sum-min" class="card-value">—</div>
+            <div id="sum-min-pair" class="card-sub">&nbsp;</div>
+          </div>
+        </div>
+        <div id="pair-table" class="pair-table"></div>
+      </div>
+
+      <div class="panel tips">
+        <div class="panel-head"><h2>操作说明</h2></div>
+        <ul>
+          <li>拖动画布中的菱形走位点可实时改变位置，碰撞立即重算。</li>
+          <li>在上方列表选中一名表演者后，<b>双击舞台空白处</b>可在当前时刻补点。</li>
+          <li>碰撞基于分段匀速直线运动的<b>解析求根</b>，非离散帧抽样。</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/lib/collision.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

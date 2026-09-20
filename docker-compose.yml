@@ -1,0 +1,11 @@
+services:
+  stage:
+    build: .
+    image: trajectory-collision-stage:latest
+    container_name: trajectory-collision-stage
+    ports:
+      - "3000:3000"
+    environment:
+      # 可改为其他宿主机访问端口（同步修改左侧端口映射即可）
+      PORT: "3000"
+    restart: unless-stopped
